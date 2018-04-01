@@ -17,7 +17,7 @@ $ fractaltool mandel -c center -z magnification -o outputfile
 ```
 #### Generate an image of the Julia set:
 ```
-fractaltool julia -s parameter -c center -z magnification -o outputfile 
+$ fractaltool julia -s parameter -c center -z magnification -o outputfile 
 ```
 #### Generate a set of images zooming into the Mandelbrot set:
 ```
