@@ -34,7 +34,7 @@ void msusage()
 	printf("\t-O : gradientoffset\n");
 	printf("\t-r : imagesize specified as WIDTHxHEIGHT\n\n");
 	printf("All complex numbers must be specified as Re,Im\n");
-	
+
 }
 void jsusage()
 {
@@ -45,7 +45,7 @@ void jsusage()
 	printf("\t-O : gradientoffset\n");
 	printf("\t-r : imagesize specified as WIDTHxHEIGHT\n\n");
 	printf("All complex numbers must be specified as Re,Im\n");
-	
+
 }
 void mzusage()
 {
@@ -58,7 +58,7 @@ void mzusage()
 	printf("\t-n : number of frames\n");
 	printf("\t-b : minzoom\n\n");
 	printf("All complex numbers must be specified as Re,Im\n");
-	
+
 }
 
 void jmusage()
@@ -184,10 +184,10 @@ void mandelsingle(int argc, char **argv)
 			return;
 		}
 		i++;
-	} 
+	}
 	long double res = (z * ((width < height) ? width : height)) / 4;
 	mandel(filename, center,z,(int)ITERATIONS(res),width,height);
-		
+
 }
 void juliasingle(int argc, char **argv)
 {
@@ -256,7 +256,7 @@ void juliasingle(int argc, char **argv)
 				{
 					center=atof(a)+atof(s2)*I;
 				}else{
-					msusage();
+					jsusage();
 					return;
 				}
 			}else{
@@ -266,7 +266,7 @@ void juliasingle(int argc, char **argv)
 				{
 					center=atof(a)+atof(s2)*I;
 				}else{
-					msusage();
+					jsusage();
 					return;
 				}
 			}
@@ -279,7 +279,7 @@ void juliasingle(int argc, char **argv)
 				{
 					seed=atof(a)+atof(s2)*I;
 				}else{
-					msusage();
+					jsusage();
 					return;
 				}
 			}else{
@@ -289,7 +289,7 @@ void juliasingle(int argc, char **argv)
 				{
 					seed=atof(a)+atof(s2)*I;
 				}else{
-					msusage();
+					jsusage();
 					return;
 				}
 			}
@@ -303,7 +303,7 @@ void juliasingle(int argc, char **argv)
 					width=atof(a);
 					height=atof(s2);
 				}else{
-					msusage();
+					jsusage();
 					return;
 				}
 			}else{
@@ -314,19 +314,19 @@ void juliasingle(int argc, char **argv)
 					width=atof(a);
 					height=atof(s2);
 				}else{
-					msusage();
+					jsusage();
 					return;
 				}
 			}
 		} else {
-			msusage();
+			jsusage();
 			return;
 		}
 		i++;
-	} 
+	}
 	long double res = (z * ((width < height) ? width : height)) / 4;
 	julia(filename, center, seed,z,(int)ITERATIONS(res),width,height);
-		
+
 }
 long double antialias(long double *cplane, long double x, long double y, long double r, int width, int height)
 {
@@ -337,7 +337,7 @@ long double antialias(long double *cplane, long double x, long double y, long do
 		for(yi=y;yi<round(y+r);yi++) {
 			for(xi=x;xi<round(x+r);xi++) {
 				/*if(xi>=0 && xi < width && yi>=0 && yi< height) {
-				
+
 					if(i<m) {
 						res=MAX(cplane[xi+yi*width],res);
 						i++;
@@ -351,7 +351,7 @@ long double antialias(long double *cplane, long double x, long double y, long do
 					//W+=w;
 				}
 			}
-		
+
 		return res/i;
 }
 void mandelzoom(int argc, char **argv)
@@ -485,8 +485,8 @@ void mandelzoom(int argc, char **argv)
 			return;
 		}
 		i++;
-	} 
-	
+	}
+
 	char *filename = malloc(200);
 	i = 0;
 	long double m;
@@ -494,7 +494,7 @@ void mandelzoom(int argc, char **argv)
 		m=0.025;
 	else
 	 m = (ze-z)/n_frames;
-	 
+
 	int length=(width<height)?width:height;
 	//z=powl(2,z);
 	//ze=powl(2,ze);
@@ -507,7 +507,7 @@ void mandelzoom(int argc, char **argv)
 	cr = cairo_create(surface);
 	//printf("m: %.5g\n",(double)m);
 	while (z < ze) {
-		
+
 		long double zoom = exp2l(z);
 		long double d = 1/(zoom*zoom);
 		long double complex cn = (1-d)*center -0.5*d;
@@ -530,36 +530,36 @@ void mandelzoom(int argc, char **argv)
 		while(z<1) {
 			zoom=exp2l(z+z2);
 			printf("Zoom: 2^%.4g\t", (double)(z+z2));
-			
+
 			d=1/(zoom*zoom);
-			
+
 			long double cx = ((1-d)*creal(center)-0.5*d);
 			long double cy = ((1-d)*cimag(center));
 			long double mx2 = (cx-xs)*res;
 			long double my2 = (cy-ys)*res;
 			printf("center: (%.10g,%.10g)\n",(double)cx,(double)cy);
-			
+
 			int x, y;
 			long double zfactor = exp2l(-z);
 			for (y = 0; y < height; y++) {
 				for (x = 0; x < width; x++) {
 					long double v = antialias(cplane,(8*x-mx1)*zfactor+mx2,(8*y-my1)*zfactor+my2,8*zfactor,8*width,8*height);
-					
+
 					if (v >= it) {
 						cairo_set_source_rgb(cr, 0, 0, 0);
 					} else {
 						cairo_set_color_from_gradient(cr,gr,logl(1+mf*v)*s *400+gr->offset);
 					}
-		
+
 					cairo_rectangle(cr, x, height-y-1, 1, 1);
 					cairo_fill(cr);
-		
+
 				}
 			}
-			
+
 			sprintf(filename, fmt, i);
 			cairo_status_t st = cairo_surface_write_to_png(surface, filename);
-			
+
 			i++;
 			z += m;
 		}
@@ -705,7 +705,7 @@ void juliamorph(int argc, char **argv)
 			return;
 		}
 		i++;
-	} 
+	}
 	char* filename=malloc(200);
 	int n;
 	long double res;
@@ -714,9 +714,9 @@ void juliamorph(int argc, char **argv)
 				sprintf(filename, fmt, n);
 				res = MIN(width,height) / 4;
 				julia(filename,0,s+n*(e-s)/n_frames,1,ITERATIONS(res), width, height);
-				
+
 	}
-	
+
 }
 
 void mandel(char *filename, long double complex center, long double zoom, int it, int width, int height)
@@ -734,7 +734,7 @@ void mandel(char *filename, long double complex center, long double zoom, int it
 	for (y = 0; y < height; y++) {
 		for (x = 0; x < width; x++) {
 			long double v = antialias(cplane,4*x,4*y,4,4*width,4*height);
-			
+
 			if (v >= it || v<0) {
 				cairo_set_source_rgb(cr, 0, 0, 0);
 			} else {
@@ -768,7 +768,7 @@ void julia(char *filename, long double complex center, long double complex seed,
 	for (y = 0; y < height; y++) {
 		for (x = 0; x < width; x++) {
 			long double v = antialias(cplane,4*x,4*y,4,4*width,4*height);
-			
+
 			if (v >= it || v<0) {
 				cairo_set_source_rgb(cr, 0, 0, 0);
 			} else {
@@ -787,10 +787,22 @@ void julia(char *filename, long double complex center, long double complex seed,
 
 }
 
+void usage() {
+		printf("Available commands are:\n");
+		printf("\tmandel    \tRender single image of the Mandelbrotset\n");
+		printf("\tjulia     \tRender single image of a Juliaset\n");
+		printf("\tmandelzoom\tRender set of images zooming into the Mandelbrotset\n");
+		printf("\tjuliamorph\tRender set of images of Juliasets with gradually changing parameter\n");
+
+}
 int main(int argc, char **argv)
 {
 	gr = load_std_gradient();
-		
+	if(argc < 2) {
+		usage();
+		exit(EXIT_FAILURE);
+	}
+
 	if(!strcmp(argv[1], "mandelzoom"))
 	{
 		mandelzoom(argc, argv);
@@ -801,10 +813,9 @@ int main(int argc, char **argv)
 	}else if(!strcmp(argv[1], "julia")){
 		juliasingle(argc, argv);
 	}else{
-		
+		usage();
 	}
-	
-		
+
 	return 0;
 }
 
