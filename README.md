@@ -11,14 +11,19 @@ stitched together (e.g. with ffmpeg) to  create animations.
 
 ### Usage
 
-Generate an image of the Mandelbrot set:
+#### Generate an image of the Mandelbrot set:
+```
 $ fractaltool mandel -c center -z magnification -o outputfile
-
-Generate an image of the Julia set:
+```
+#### Generate an image of the Julia set:
+```
 fractaltool julia -s parameter -c center -z magnification -o outputfile 
-
-Generate a set of images zooming into the Mandelbrot set:
+```
+#### Generate a set of images zooming into the Mandelbrot set:
+```
 $ fractaltool mandelzoom -c center -e maxzoom -o outputformat
-
-Generate a set of images of Julia sets with gradually changing parameter:
+```
+#### Generate a set of images of Julia sets with gradually changing parameter:
+```
 $ fractaltool juliamorph -b startingpoint -e endpoint -o outputformat
+```
